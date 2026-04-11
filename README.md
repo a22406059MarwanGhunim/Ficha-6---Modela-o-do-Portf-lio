@@ -1,0 +1,1 @@
+# Ficha-6---Modela-o-do-Portf-lio
