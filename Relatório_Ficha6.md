@@ -41,7 +41,7 @@ A visualização das relações entre as entidades
 |--------------------|--------------------|--------------------|----------------------|
 | Licenciatura       | Tem                | UC                 | 1 : N                |
 | UC                 | É lecionada por    | Professor          | N : N                |
-| UC                 | Contém             | Projeto            | 1 : N                |
+| UC                 | Contém             | Projeto            | N : N                |
 | Projeto            | Usa                | Tecnologia         | N : N                |
 | Projeto            | Possui             | Competencia        | N : N                |
 | TFC                | orientado por      | Professor          | N : 1                |
