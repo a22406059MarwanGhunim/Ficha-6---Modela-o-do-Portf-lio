@@ -2,15 +2,12 @@
 
 import json
 from django.core.management.base import BaseCommand
-from django.core.files.base import ContentFile
-import urllib.request
-import os
 
 from portfolio.models import TFC, Professor, Licenciatura, Tecnologia, Competencia
 
 
 class Command(BaseCommand):
-    help = "Carrega os TFCs do ficheiro JSON para a base de dados"
+    help = "Carrega os TFCs do JSON (versão rápida)"
 
     def handle(self, *args, **options):
         caminho_json = "data/TFCS.json"
@@ -20,7 +17,6 @@ class Command(BaseCommand):
         with open(caminho_json, "r", encoding="utf-8") as f:
             dados = json.load(f)
 
-        # Se o JSON for um único objeto em vez de lista
         if isinstance(dados, dict):
             dados = [dados]
 
@@ -29,93 +25,66 @@ class Command(BaseCommand):
 
         for item in dados:
             try:
-                # 1. Orientador (Professor)
-                orientador, _ = Professor.objects.get_or_create(
-                    nome=item.get("orientador", "Desconhecido"),
-                    defaults={
-                        "email": "orientador@ulusofona.pt",
-                        "URL": "https://teses.deisi.ulusofona.pt/"
-                    }
-                )
+                titulo = item.get("titulo")
+                if not titulo:
+                    continue
 
-                # 2. Licenciatura
-                lic_str = item.get("licenciaturas", "")
-                nome_lic = lic_str.split(".")[0].strip() if "." in lic_str else lic_str
+                # Orientador
+                orientador_nome = item.get("orientador") or "Desconhecido"
+                orientador, _ = Professor.objects.get_or_create(nome=orientador_nome)
 
-                licenciatura, _ = Licenciatura.objects.get_or_create(
-                    nome=nome_lic,
-                    defaults={
-                        "Instituicao": "Universidade Lusófona",
-                        "duracao": 3,
-                        "creditos": 180,
-                        "semestre": "2025"
-                    }
-                )
+                # Licenciatura
+                lic_str = item.get("licenciaturas") or ""
+                nome_lic = lic_str.split(".")[0].strip() if "." in lic_str else lic_str or "Engenharia Informática"
+                licenciatura, _ = Licenciatura.objects.get_or_create(nome=nome_lic)
 
-                # 3. Tecnologias
+                # Tecnologias (mais rápido)
+                tech_nomes = item.get("tecnologias usadas") or []
                 tecnologias = []
-                for tech_nome in item.get("tecnologias usadas", []):
-                    tech, _ = Tecnologia.objects.get_or_create(
-                        nome=tech_nome,
-                        defaults={
-                            "tipo": "Linguagem/Ferramenta",
-                            "descricao": f"Tecnologia: {tech_nome}",
-                            "URL": "#",
-                            "interesseNivel": 7
-                        }
-                    )
-                    tecnologias.append(tech)
+                for nome in tech_nomes:
+                    if nome:
+                        tech, _ = Tecnologia.objects.get_or_create(
+                            nome=nome,
+                            defaults={"tipo": "Linguagem/Ferramenta", "URL": "#", "interesseNivel": 7}
+                        )
+                        tecnologias.append(tech)
 
-                # 4. Áreas (Competencias)
+                # Áreas
+                area_nomes = item.get("áreas") or []
                 areas = []
-                for area_nome in item.get("áreas", []):
-                    area, _ = Competencia.objects.get_or_create(
-                        nome=area_nome,
-                        defaults={
-                            "tipo": "Área Temática",
-                            "nivel": 8,
-                            "descricao": f"Área: {area_nome}"
-                        }
-                    )
-                    areas.append(area)
+                for nome in area_nomes:
+                    if nome:
+                        area, _ = Competencia.objects.get_or_create(
+                            nome=nome,
+                            defaults={"tipo": "Área Temática", "nivel": 8}
+                        )
+                        areas.append(area)
 
-                # 5. Criar ou atualizar o TFC
+                # TFC - agora adiciona mesmo que falte URL ou resumo
                 tfc, criado = TFC.objects.update_or_create(
-                    titulo=item["titulo"],
-                    autor=item.get("nome", ""),
+                    titulo=titulo,
+                    autor=item.get("nome") or "Autor Desconhecido",
                     defaults={
                         "orientador": orientador,
                         "licenciatura": licenciatura,
-                        "descricao": item.get("resumo", "")[:200],
-                        "URL": item.get("link para PDF", ""),
+                        "descricao": (item.get("resumo") or "")[:200],
+                        "URL": item.get("link para PDF") or "",          # aceita vazio
                         "destaque": False,
                     }
                 )
 
-                # ManyToMany
                 tfc.tecnologia.set(tecnologias)
                 tfc.area.set(areas)
 
-                # 6. Imagem (tenta guardar se existir)
-                url_imagem = item.get("imagem")
-                if url_imagem and not tfc.imagem:
-                    try:
-                        with urllib.request.urlopen(url_imagem) as resposta:
-                            nome_ficheiro = os.path.basename(url_imagem) or "imagem.jpg"
-                            tfc.imagem.save(nome_ficheiro, ContentFile(resposta.read()), save=True)
-                        self.stdout.write(f"   ✓ Imagem guardada: {item['titulo']}")
-                    except:
-                        pass   # ignora se não conseguir baixar a imagem
-
                 if criado:
                     criados += 1
-                    self.stdout.write(f"✅ Criado: {item['titulo']}")
+                    self.stdout.write(f"✅ Criado: {titulo}")
                 else:
                     atualizados += 1
-                    self.stdout.write(f"🔄 Atualizado: {item['titulo']}")
+                    self.stdout.write(f"🔄 Atualizado: {titulo}")
 
             except Exception as e:
-                self.stdout.write(f"❌ Erro ao processar '{item.get('titulo', 'sem título')}': {e}")
+                self.stdout.write(f"❌ Erro em '{item.get('titulo', 'sem título')}': {e}")
 
         self.stdout.write(self.style.SUCCESS(
             f"\n✅ Concluído! Criados: {criados} | Atualizados: {atualizados}"
