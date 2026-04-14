@@ -37,6 +37,8 @@ class TFCAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'autor', 'orientador', 'destaque')
     search_fields = ('titulo',)
     list_filter = ('destaque',)
+    filter_horizontal = ('tecnologia',)
+    filter_vertical = ('area',)
 
 @admin.register(Competencia)
 class CompetenciaAdmin(admin.ModelAdmin):

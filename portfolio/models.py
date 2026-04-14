@@ -64,18 +64,6 @@ class UC(models.Model):
         return self.nome
 
 
-class TFC(models.Model):
-    titulo = models.CharField(max_length=100)
-    autor = models.CharField(max_length=100)
-    descricao = models.CharField(max_length=200)
-    orientador = models.ForeignKey(Professor, on_delete=models.CASCADE)
-    destaque = models.BooleanField(default=False)
-    URL = models.URLField()
-
-    def __str__(self):
-        return self.titulo
-
-
 class Competencia(models.Model):
     nome = models.CharField(max_length=100)
     tipo = models.CharField(max_length=100)
@@ -86,6 +74,21 @@ class Competencia(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class TFC(models.Model):
+    titulo = models.CharField(max_length=100)
+    autor = models.CharField(max_length=100)
+    orientador = models.ForeignKey(Professor, on_delete=models.CASCADE)
+    licenciatura = models.ForeignKey(Licenciatura, on_delete=models.CASCADE)
+    descricao = models.CharField(max_length=200)
+    URL = models.URLField()
+    imagem = models.ImageField(null=True, blank=True)
+    tecnologia = models.ManyToManyField(Tecnologia, blank=True)
+    area = models.ManyToManyField(Competencia, blank=True)
+    destaque = models.BooleanField(default=False)
+    def __str__(self):
+        return self.titulo
 
 
 class Formacao(models.Model):
