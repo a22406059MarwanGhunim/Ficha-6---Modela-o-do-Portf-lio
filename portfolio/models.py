@@ -53,16 +53,22 @@ class Projeto(models.Model):
 
 
 class UC(models.Model):
-    nome = models.CharField(max_length=100)
-    semestre = models.CharField(max_length=20)
-    creditos = models.IntegerField()
-    descricao = models.CharField(max_length=200)
+    course_code = models.IntegerField()                    
+    codigo_legivel = models.CharField(max_length=30, unique=True)  
+    nome = models.CharField(max_length=150)                
+    semestre = models.CharField(max_length=30, blank=True) 
+    ano = models.IntegerField(null=True, blank=True)   
+    creditos = models.IntegerField()     
+    descricao = models.TextField(blank=True)               
+    programa = models.TextField(blank=True)                
+    avaliacao = models.TextField(blank=True)               
+    obrigatorio = models.BooleanField(default=True)        
+    lingua = models.CharField(max_length=10, blank=True)   
     imagem = models.ImageField(null=True, blank=True)
-    URL = models.URLField()
+    URL = models.URLField(blank=True)
 
     def __str__(self):
         return self.nome
-
 
 class Competencia(models.Model):
     nome = models.CharField(max_length=100)
