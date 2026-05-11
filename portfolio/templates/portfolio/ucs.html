@@ -1,0 +1,15 @@
+{% extends "portfolio/base.html" %}
+
+{% block content %}
+<h2>Unidades Curriculares</h2>
+<section>
+    {% for uc in ucs %}
+    <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <h3>{{ uc.nome }} ({{ uc.codigo_legivel }})</h3>
+        <p>Ano: {{ uc.ano }} | Semestre: {{ uc.semestre }} | ECTS: {{ uc.creditos }}</p>
+        <p><strong>Programa:</strong> {{ uc.programa|truncatewords:20 }}</p>
+        <p><a href="{{ uc.URL }}" target="_blank">Mais detalhes</a></p>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

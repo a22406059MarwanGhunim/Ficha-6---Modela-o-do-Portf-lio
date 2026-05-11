@@ -1,0 +1,16 @@
+{% extends "portfolio/base.html" %}
+
+{% block content %}
+<h2>Formação Académica/Extra</h2>
+<section>
+    {% for item in formacoes %}
+    <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <h3>{{ item.titulo }}</h3>
+        <p><strong>{{ item.instituicao }}</strong></p>
+        <p>{{ item.dataInicio }} a {{ item.dataConclusao }}</p>
+        <p><em>{{ item.tipo }}</em></p>
+        <p>{{ item.descricao }}</p>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

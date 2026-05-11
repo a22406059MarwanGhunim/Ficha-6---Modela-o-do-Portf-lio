@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Portfólio</title>
+    <style>
+        /* CSS Básico para organizar o layout */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background: #444;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            flex: 1;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>O Meu Portfólio Académico</h1>
+    </header>
+
+    <nav>
+        <a href="{% url 'portfolio:licenciatura' %}">Licenciatura</a>
+        <a href="{% url 'portfolio:ucs' %}">Disciplinas (UCs)</a>
+        <a href="{% url 'portfolio:projetos' %}">Projetos</a>
+        <a href="{% url 'portfolio:tecnologias' %}">Tecnologias</a>
+        <a href="{% url 'portfolio:professores' %}">Professores</a>
+        <a href="{% url 'portfolio:competencias' %}">Competências</a>
+        <a href="{% url 'portfolio:tfcs' %}">TFCs</a>
+        <a href="{% url 'portfolio:formacao' %}">Formação</a>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 - Criado no âmbito da cadeira de PW</p>
+    </footer>
+
+</body>
+</html>

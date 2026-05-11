@@ -25,7 +25,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("escola/", include("escola.urls")), 
-    path("", include("escola.urls")),  #  rota equivalente sem precisar de escrever "escola"
+    path('portfolio/', include('portfolio.urls')),
+    path('', include('portfolio.urls')), # Isto faz com que a raiz do site use as URLs do portfólio
 ]
 
 # Serve ficheiros media em DEBUG

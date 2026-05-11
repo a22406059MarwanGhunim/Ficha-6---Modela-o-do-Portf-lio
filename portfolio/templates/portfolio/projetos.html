@@ -1,0 +1,21 @@
+{% extends "portfolio/base.html" %}
+
+{% block content %}
+<h2>Projetos</h2>
+<section>
+    {% for projeto in projetos %}
+    <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <header>
+            <h3>{{ projeto.titulo }}</h3>
+            <p>Data: {{ projeto.dataRealizacao }} | Nota: {{ projeto.NotaFinal }}</p>
+        </header>
+        <p><strong>Descrição:</strong> {{ projeto.descricao }}</p>
+        <p><strong>Conceitos:</strong> {{ projeto.ConceitosAplicados }}</p>
+        <p>
+            <a href="{{ projeto.githubRepo }}" target="_blank">GitHub</a> | 
+            <a href="{{ projeto.video }}" target="_blank">Vídeo Demo</a>
+        </p>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

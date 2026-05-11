@@ -1,0 +1,17 @@
+{% extends "portfolio/base.html" %}
+
+{% block content %}
+<h2>Licenciatura</h2>
+<section>
+    {% for licenciatura in licenciaturas %}
+    <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <header>
+            <h3>{{ licenciatura.nome }}</h3>
+            <p><strong>Instituição:</strong> {{ licenciatura.Instituicao }}</p>
+        </header>
+        <p>Duração: {{ licenciatura.duracao }} anos | Créditos: {{ licenciatura.creditos }}</p>
+        <p>Semestre: {{ licenciatura.semestre }}</p>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

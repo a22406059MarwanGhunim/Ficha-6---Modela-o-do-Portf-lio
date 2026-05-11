@@ -1,0 +1,23 @@
+{% extends "portfolio/base.html" %}
+
+{% block content %}
+<h2>Professores</h2>
+<section>
+    {% for professor in professores %}
+    <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <h3>{{ professor.nome }}</h3>
+        <p>Email: {{ professor.email }}</p>
+        <p><a href="{{ professor.URL }}" target="_blank">Página Pessoal/Curriculum</a></p>
+        
+        <h4>Unidades Curriculares:</h4>
+        <ul>
+            {% for uc in professor.Disciplina.all %}
+                <li>{{ uc.nome }}</li>
+            {% empty %}
+                <li>Sem disciplinas associadas</li>
+            {% endfor %}
+        </ul>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

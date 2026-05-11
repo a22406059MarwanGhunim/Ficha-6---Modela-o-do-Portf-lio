@@ -1,0 +1,16 @@
+{% extends "portfolio/base.html" %}
+
+{% block content %}
+<h2>Trabalhos de Fim de Curso (TFC)</h2>
+<section>
+    {% for tfc in tfcs %}
+    <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <h3>{{ tfc.titulo }}</h3>
+        <p><strong>Autor:</strong> {{ tfc.autor }}</p>
+        <p><strong>Orientador:</strong> {{ tfc.orientador.nome }}</p>
+        <p>{{ tfc.descricao }}</p>
+        <p><a href="{{ tfc.URL }}" target="_blank">Link do Trabalho</a></p>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}
