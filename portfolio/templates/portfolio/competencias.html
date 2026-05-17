@@ -2,6 +2,11 @@
 
 {% block content %}
 <h2>Competências</h2>
+
+<!-- Botão para Criar Novo -->
+<a href="{% url 'portfolio:nova_competencia' %}">[ + Adicionar Competência ]</a>
+<br><br>
+
 <section>
     {% for competencia in competencias %}
     <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
@@ -9,6 +14,12 @@
         <p><strong>Tipo:</strong> {{ competencia.tipo }}</p>
         <p>Nível: {{ competencia.nivel }}/10</p>
         <p>{{ competencia.descricao }}</p>
+        
+        <!-- Botões de Ação CRUD -->
+        <p>
+            <a href="{% url 'portfolio:edita_competencia' competencia.id %}">Editar</a> | 
+            <a href="{% url 'portfolio:apaga_competencia' competencia.id %}" onclick="return confirm('Tem a certeza que pretende apagar esta competência?')">Apagar</a>
+        </p>
     </article>
     {% endfor %}
 </section>

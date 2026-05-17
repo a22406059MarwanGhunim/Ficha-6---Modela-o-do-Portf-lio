@@ -2,6 +2,11 @@
 
 {% block content %}
 <h2>Formação Académica/Extra</h2>
+
+<!-- Botão para Criar Novo -->
+<a href="{% url 'portfolio:nova_formacao' %}">[ + Adicionar Formação ]</a>
+<br><br>
+
 <section>
     {% for item in formacoes %}
     <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
@@ -10,6 +15,12 @@
         <p>{{ item.dataInicio }} a {{ item.dataConclusao }}</p>
         <p><em>{{ item.tipo }}</em></p>
         <p>{{ item.descricao }}</p>
+        
+        <!-- Botões de Ação CRUD -->
+        <p>
+            <a href="{% url 'portfolio:edita_formacao' item.id %}">Editar</a> | 
+            <a href="{% url 'portfolio:apaga_formacao' item.id %}" onclick="return confirm('Tem a certeza que pretende apagar esta formação?')">Apagar</a>
+        </p>
     </article>
     {% endfor %}
 </section>

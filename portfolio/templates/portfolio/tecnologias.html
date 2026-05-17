@@ -2,6 +2,11 @@
 
 {% block content %}
 <h2>Tecnologias</h2>
+
+<!-- Botão para Criar Novo -->
+<a href="{% url 'portfolio:nova_tecnologia' %}">[ + Adicionar Tecnologia ]</a>
+<br><br>
+
 <section>
     {% for tecnologia in tecnologias %}
     <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
@@ -13,6 +18,12 @@
             <img src="{{ tecnologia.logo.url }}" alt="{{ tecnologia.nome }}" width="50">
         {% endif %}
         <p><a href="{{ tecnologia.URL }}" target="_blank">Saber mais</a></p>
+        
+        <!-- Botões de Ação CRUD -->
+        <p>
+            <a href="{% url 'portfolio:edita_tecnologia' tecnologia.id %}">Editar</a> | 
+            <a href="{% url 'portfolio:apaga_tecnologia' tecnologia.id %}" onclick="return confirm('Tem a certeza que pretende apagar esta tecnologia?')">Apagar</a>
+        </p>
     </article>
     {% endfor %}
 </section>

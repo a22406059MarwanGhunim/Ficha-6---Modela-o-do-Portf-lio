@@ -2,6 +2,11 @@
 
 {% block content %}
 <h2>Projetos</h2>
+
+<!-- Botão para Criar Novo -->
+<a href="{% url 'portfolio:novo_projeto' %}">[ + Adicionar Projeto ]</a>
+<br><br>
+
 <section>
     {% for projeto in projetos %}
     <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
@@ -14,6 +19,13 @@
         <p>
             <a href="{{ projeto.githubRepo }}" target="_blank">GitHub</a> | 
             <a href="{{ projeto.video }}" target="_blank">Vídeo Demo</a>
+        </p>
+        
+        <hr style="border: 0; border-top: 1px dashed #eee;">
+        <!-- Botões de Ação CRUD -->
+        <p>
+            <a href="{% url 'portfolio:edita_projeto' projeto.id %}">Editar</a> | 
+            <a href="{% url 'portfolio:apaga_projeto' projeto.id %}" onclick="return confirm('Tem a certeza que pretende apagar este projeto?')">Apagar</a>
         </p>
     </article>
     {% endfor %}
