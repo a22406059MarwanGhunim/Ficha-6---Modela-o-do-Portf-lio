@@ -48,6 +48,14 @@
             padding: 1rem;
             margin-top: 20px;
         }
+        .auth-section {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-left: 15px;
+        }
+        .auth-section a {
+            color: #ffc107;
+        }
     </style>
 </head>
 <body>
@@ -65,6 +73,17 @@
         <a href="{% url 'portfolio:competencias' %}">Competências</a>
         <a href="{% url 'portfolio:tfcs' %}">TFCs</a>
         <a href="{% url 'portfolio:formacao' %}">Formação</a>
+        <a href="{% url 'artigos:lista_artigos' %}">Blog (Artigos)</a>
+        
+        <!-- Bloco de Autenticação integrado no Menu -->
+        <span class="auth-section">
+            {% if request.user.is_authenticated %}
+                Olá, <strong>{{ request.user.username }}</strong>! | 
+                <a href="{% url 'accounts:logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'accounts:login' %}">Login</a>
+            {% endif %}
+        </span>
     </nav>
 
     <main>

@@ -1,0 +1,24 @@
+{% extends "portfolio/base.html" %}
+{% block content %}
+<h2>Login</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <p style="color: red; font-weight: bold;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Entrar</button>
+</form>
+
+<hr>
+<!-- Integração da alternativa exigida -->
+<h3>Alternativa sem senha:</h3>
+<p>Prefere entrar sem digitar a sua password? <a href="{% url 'accounts:magic_link_request' %}">Entrar com Link Mágico 🌟</a></p>
+
+<hr>
+<p>Não tem conta? <a href="{% url 'accounts:register' %}">Registe-se aqui</a></p>
+{% endblock %}

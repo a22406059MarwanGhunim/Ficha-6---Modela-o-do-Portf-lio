@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'portfolio',
     'escola',
+    'accounts',
+    'artigos',
 
 ]
 
@@ -126,3 +128,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # URL pública para aceder aos ficheiros
 MEDIA_URL = '/media/'
+
+# Configuração para desenvolvimento: envia o email para o terminal
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@portfolio.com'

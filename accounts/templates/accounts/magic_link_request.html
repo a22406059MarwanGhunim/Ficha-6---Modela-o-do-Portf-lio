@@ -1,0 +1,23 @@
+{% extends "portfolio/base.html" %}
+{% block content %}
+<h2>Entrar com Link Mágico</h2>
+<p>Introduza o seu email associado à conta. Iremos enviar-lhe um link de acesso direto.</p>
+
+{% if messages %}
+    {% for message in messages %}
+        <p style="color: green; font-weight: bold;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <p>
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+    </p>
+    <button type="submit">Enviar Link de Acesso</button>
+</form>
+
+<br>
+<p><a href="{% url 'accounts:login' %}">Voltar ao login por senha</a></p>
+{% endblock %}

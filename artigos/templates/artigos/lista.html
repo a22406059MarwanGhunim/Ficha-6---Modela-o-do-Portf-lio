@@ -1,0 +1,21 @@
+{% extends "portfolio/base.html" %}
+{% block content %}
+<h2>Blog de Tecnologia & Soft-Skills</h2>
+
+{% if request.user.is_authenticated and request.user.groups.all.0.name == "autores" or request.user.groups.all.1.name == "autores" %}
+    <a href="{% url 'artigos:novo_artigo' %}">[ + Publicar Novo Artigo ]</a>
+    <br><br>
+{% endif %}
+
+<section>
+    {% for artigo in artigos %}
+    <article style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <h3><a href="{% url 'artigos:detalhe_artigo' artigo.id %}">{{ artigo.titulo }}</a></h3>
+        <p>Por: <strong>{{ artigo.autor.username }}</strong> em {{ artigo.data_criacao|date:"d/m/Y" }}</p>
+        <p>👍 {{ artigo.total_likes }} Likes</p>
+    </article>
+    {% empty %}
+        <p>Ainda não foram publicados artigos.</p>
+    {% endfor %}
+</section>
+{% endblock %}

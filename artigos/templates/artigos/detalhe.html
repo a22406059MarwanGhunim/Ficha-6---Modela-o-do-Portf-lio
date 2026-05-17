@@ -1,0 +1,62 @@
+{% extends "portfolio/base.html" %}
+{% block content %}
+<article style="border: 1px solid #ccc; padding: 20px;">
+    <h2>{{ artigo.titulo }}</h2>
+    <p>Publicado por <strong>{{ artigo.autor.username }}</strong> em {{ artigo.data_criacao }}</p>
+    <hr>
+    
+    {% if artigo.fotografia %}
+        <img src="{{ artigo.fotografia.url }}" alt="Imagem do artigo" style="max-width: 100%;"><br><br>
+    {% endif %}
+    
+    <p>{{ artigo.texto|linebreaks }}</p>
+    
+    {% if artigo.link_externo %}
+        <p><a href="{{ artigo.link_externo }}" target="_blank">Ler fonte original externa</a></p>
+    {% endif %}
+    
+    <hr>
+    <!-- Secção de Likes -->
+    <p>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'artigos:like_artigo' artigo.id %}">
+                {% if request.user in artigo.likes.all %}❤️ Retirar Gostei{% else %}👍 Gostei{% endif %}
+            </a> 
+        {% else %}
+            👍 
+        {% endif %}
+        ({{ artigo.total_likes }} pessoas gostaram disto)
+    </p>
+
+    <!-- Botão de edição apenas para o dono do artigo -->
+    {% if request.user == artigo.autor %}
+        <p><a href="{% url 'artigos:edita_artigo' artigo.id %}">[ 📝 Editar o meu artigo ]</a></p>
+    {% endif %}
+</article>
+
+<br>
+<h3>Comentários ({{ comentarios.count }})</h3>
+<section style="margin-bottom: 20px;">
+    {% for c in comentarios %}
+        <div style="background: #f4f4f4; padding: 10px; margin-bottom: 5px;">
+            <strong>{{ c.autor.username }}</strong> <small>({{ c.data_criacao|date:"d/m H:i" }})</small>
+            <p>{{ c.texto }}</p>
+        </div>
+    {% empty %}
+        <p>Ninguém comentou ainda. Seja o primeiro!</p>
+    {% endfor %}
+</section>
+
+{% if request.user.is_authenticated %}
+    <h4>Deixe o seu comentário:</h4>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submeter Comentário</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'accounts:login' %}">Faça login</a> para poder comentar.</p>
+{% endif %}
+
+<br><a href="{% url 'artigos:lista_artigos' %}">Voltar à lista</a>
+{% endblock %}

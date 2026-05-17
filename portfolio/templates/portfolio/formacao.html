@@ -3,9 +3,11 @@
 {% block content %}
 <h2>Formação Académica/Extra</h2>
 
-<!-- Botão para Criar Novo -->
-<a href="{% url 'portfolio:nova_formacao' %}">[ + Adicionar Formação ]</a>
-<br><br>
+<!-- Botão Criar Protegido -->
+{% if request.user.is_authenticated and request.user.groups.all.0.name == "gestor-portfolio" %}
+    <a href="{% url 'portfolio:nova_formacao' %}">[ + Adicionar Formação ]</a>
+    <br><br>
+{% endif %}
 
 <section>
     {% for item in formacoes %}
@@ -16,11 +18,13 @@
         <p><em>{{ item.tipo }}</em></p>
         <p>{{ item.descricao }}</p>
         
-        <!-- Botões de Ação CRUD -->
-        <p>
-            <a href="{% url 'portfolio:edita_formacao' item.id %}">Editar</a> | 
-            <a href="{% url 'portfolio:apaga_formacao' item.id %}" onclick="return confirm('Tem a certeza que pretende apagar esta formação?')">Apagar</a>
-        </p>
+        <!-- Botões CRUD Protegidos -->
+        {% if request.user.is_authenticated and request.user.groups.all.0.name == "gestor-portfolio" %}
+            <p>
+                <a href="{% url 'portfolio:edita_formacao' item.id %}">Editar</a> | 
+                <a href="{% url 'portfolio:apaga_formacao' item.id %}" onclick="return confirm('Tem a certeza que pretende apagar esta formação?')">Apagar</a>
+            </p>
+        {% endif %}
     </article>
     {% endfor %}
 </section>
