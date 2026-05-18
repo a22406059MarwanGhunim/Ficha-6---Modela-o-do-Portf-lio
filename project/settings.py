@@ -1,3 +1,5 @@
+import environ
+
 """
 Django settings for project project.
 
@@ -132,3 +134,18 @@ MEDIA_URL = '/media/'
 # Configuração para desenvolvimento: envia o email para o terminal
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@portfolio.com'
+
+## em settings.py
+
+import environ
+
+# inicializar environ
+env = environ.Env()
+
+# ler ficheiro .env (opcional mas recomendado)
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
+## definicao da base de dados psql em Neon
+DATABASES = {
+    "default": env.db("DATABASE_URL")
+}

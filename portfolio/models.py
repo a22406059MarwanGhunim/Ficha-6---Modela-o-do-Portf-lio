@@ -13,10 +13,10 @@ class Licenciatura(models.Model):
         return self.nome
 
 class Professor(models.Model):
-    nome = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
+    nome = models.TextField()
+    email = models.EmailField(max_length=500) 
     Disciplina = models.ManyToManyField('UC', blank=True)
-    URL = models.URLField()
+    URL = models.URLField(max_length=1000) 
 
     def __str__(self):
         return self.nome
@@ -83,11 +83,11 @@ class Competencia(models.Model):
 
 
 class TFC(models.Model):
-    titulo = models.CharField(max_length=100)
-    autor = models.CharField(max_length=100)
+    titulo = models.TextField()
+    autor = models.TextField()
     orientador = models.ForeignKey(Professor, on_delete=models.CASCADE)
     licenciatura = models.ForeignKey(Licenciatura, on_delete=models.CASCADE)
-    descricao = models.CharField(max_length=200)
+    descricao = models.TextField()
     URL = models.URLField()
     imagem = models.ImageField(null=True, blank=True)
     tecnologia = models.ManyToManyField(Tecnologia, blank=True)
@@ -98,22 +98,22 @@ class TFC(models.Model):
 
 
 class Formacao(models.Model):
-    titulo = models.CharField(max_length=100)
+    titulo = models.TextField()
     instituicao = models.CharField(max_length=150)
     dataInicio = models.DateField()
     dataConclusao = models.DateField()
-    tipo = models.CharField(max_length=100)
-    descricao = models.CharField(max_length=200)
+    tipo = models.TextField()
+    descricao = models.TextField()
 
     def __str__(self):
         return self.titulo
 
 
 class MakingOFF(models.Model):
-    DescricaoDescisoes = models.CharField(max_length=250)
-    Erros = models.CharField(max_length=150)
-    Correcoes = models.CharField(max_length=150)
-    Justificacao = models.CharField(max_length=250)
+    DescricaoDescisoes = models.TextField()
+    Erros = models.TextField()
+    Correcoes = models.TextField()
+    Justificacao = models.TextField()
     usoAI = models.BooleanField()
     FotoCaderno = models.ImageField(null=True, blank=True)
 
